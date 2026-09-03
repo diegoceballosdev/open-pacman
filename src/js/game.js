@@ -13,6 +13,7 @@ const OPPOSITE = { left: 'right', right: 'left', up: 'down', down: 'up' };
 const PACMAN_SPEED = 0.125; // 1/8 celda/frame -> alinea cada 8 frames
 const GHOST_SPEED = 0.1;    // 1/10 celda/frame
 const AMBUSHER_OFFSET = 4;
+const SHY_RANGE = 8;
 
 // Crea una partida nueva. Copia MAZE (pristino) a game.grid para poder comer
 // dots sin destruir el original, y reiniciar.
@@ -150,6 +151,15 @@ function decideGhost( game, g ) {
     const px = Math.round( p.x );
     const py = Math.round( p.y );
     g.dir = greedyDir( g, choices, grid[ 0 ].length - 1 - px, py );
+  } else if ( g.kind === 'shy' ) {
+    const px = Math.round( p.x );
+    const py = Math.round( p.y );
+    const dist = Math.abs( g.x - px ) + Math.abs( g.y - py );
+    if ( dist >= SHY_RANGE ) {
+      g.dir = greedyDir( g, choices, px, py );
+    } else {
+      g.dir = choices[ Math.floor( Math.random() * choices.length ) ];
+    }
   } else {
     g.dir = choices[ Math.floor( Math.random() * choices.length ) ];
   }
