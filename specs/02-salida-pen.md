@@ -1,6 +1,6 @@
 # SPEC 02 — Salida de los fantasmas fuera de la pen
 
-> **Estado:** Aprobado
+> **Estado:** Implemented
 > **Depende de:** SPEC 01
 > **Fecha:** 2026-09-03
 > **Objetivo:** Los 4 fantasmas nacen fuera de la pen (fila 11, x 12–15) y el tile 3 es muro para todos.
