@@ -12,6 +12,8 @@ const OPPOSITE = { left: 'right', right: 'left', up: 'down', down: 'up' };
 
 const PACMAN_SPEED = 0.125; // 1/8 celda/frame -> alinea cada 8 frames
 const GHOST_SPEED = 0.1;    // 1/10 celda/frame
+const AMBUSHER_OFFSET = 4;
+const SHY_RANGE = 8;
 
 // Crea una partida nueva. Copia MAZE (pristino) a game.grid para poder comer
 // dots sin destruir el original, y reiniciar.
@@ -110,6 +112,22 @@ function movePacman( game ) {
   wrapTunnel( p, width );
 }
 
+function greedyDir( g, choices, tx, ty ) {
+  let best = choices[ 0 ];
+  let bestDist = Infinity;
+  for ( const dir of choices ) {
+    const d = DIRS[ dir ];
+    const nx = g.x + d.x;
+    const ny = g.y + d.y;
+    const dist = Math.abs( nx - tx ) + Math.abs( ny - ty );
+    if ( dist < bestDist ) {
+      bestDist = dist;
+      best = dir;
+    }
+  }
+  return best;
+}
+
 function decideGhost( game, g ) {
   const grid = game.grid;
   const p = game.pacman;
@@ -123,19 +141,25 @@ function decideGhost( game, g ) {
   if ( g.kind === 'hunter' ) {
     const px = Math.round( p.x );
     const py = Math.round( p.y );
-    let best = choices[ 0 ];
-    let bestDist = Infinity;
-    for ( const dir of choices ) {
-      const d = DIRS[ dir ];
-      const nx = g.x + d.x;
-      const ny = g.y + d.y;
-      const dist = Math.abs( nx - px ) + Math.abs( ny - py );
-      if ( dist < bestDist ) {
-        bestDist = dist;
-        best = dir;
-      }
+    g.dir = greedyDir( g, choices, px, py );
+  } else if ( g.kind === 'ambusher' ) {
+    const px = Math.round( p.x );
+    const py = Math.round( p.y );
+    const d = DIRS[ p.dir ];
+    g.dir = greedyDir( g, choices, px + AMBUSHER_OFFSET * d.x, py + AMBUSHER_OFFSET * d.y );
+  } else if ( g.kind === 'flanker' ) {
+    const px = Math.round( p.x );
+    const py = Math.round( p.y );
+    g.dir = greedyDir( g, choices, grid[ 0 ].length - 1 - px, py );
+  } else if ( g.kind === 'shy' ) {
+    const px = Math.round( p.x );
+    const py = Math.round( p.y );
+    const dist = Math.abs( g.x - px ) + Math.abs( g.y - py );
+    if ( dist >= SHY_RANGE ) {
+      g.dir = greedyDir( g, choices, px, py );
+    } else {
+      g.dir = choices[ Math.floor( Math.random() * choices.length ) ];
     }
-    g.dir = best;
   } else {
     g.dir = choices[ Math.floor( Math.random() * choices.length ) ];
   }
