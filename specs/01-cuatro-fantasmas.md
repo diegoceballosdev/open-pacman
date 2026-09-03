@@ -1,6 +1,6 @@
 # SPEC 01 — Cuatro fantasmas con personalidades distintas
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** ninguna
 > **Fecha:** 2026-09-03
 > **Objetivo:** El juego tiene cuatro fantasmas con `kind` distintos (`hunter`, `ambusher`, `flanker`, `shy`) y `hunter` persigue a Pac-Man con Manhattan greedy.
