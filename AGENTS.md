@@ -1,4 +1,4 @@
-# AGENTS.md!!!
+# AGENTS.md!!!!!!!!!!!!123
 
 Vanilla HTML/CSS/JS Pac-Man clone. No bundler, no npm, no tests, no linter. Open `src/index.html` in a browser (`file://` works).
 
