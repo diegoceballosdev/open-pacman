@@ -12,6 +12,7 @@ const OPPOSITE = { left: 'right', right: 'left', up: 'down', down: 'up' };
 
 const PACMAN_SPEED = 0.125; // 1/8 celda/frame -> alinea cada 8 frames
 const GHOST_SPEED = 0.1;    // 1/10 celda/frame
+const AMBUSHER_OFFSET = 4;
 
 // Crea una partida nueva. Copia MAZE (pristino) a game.grid para poder comer
 // dots sin destruir el original, y reiniciar.
@@ -140,6 +141,11 @@ function decideGhost( game, g ) {
     const px = Math.round( p.x );
     const py = Math.round( p.y );
     g.dir = greedyDir( g, choices, px, py );
+  } else if ( g.kind === 'ambusher' ) {
+    const px = Math.round( p.x );
+    const py = Math.round( p.y );
+    const d = DIRS[ p.dir ];
+    g.dir = greedyDir( g, choices, px + AMBUSHER_OFFSET * d.x, py + AMBUSHER_OFFSET * d.y );
   } else {
     g.dir = choices[ Math.floor( Math.random() * choices.length ) ];
   }
