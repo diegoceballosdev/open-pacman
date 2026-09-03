@@ -1,6 +1,6 @@
 # SPEC 01 — Cuatro fantasmas con personalidades distintas
 
-> **Estado:** Borrador
+> **Estado:** Aprobado
 > **Depende de:** ninguna
 > **Fecha:** 2026-09-03
 > **Objetivo:** El juego tiene cuatro fantasmas con `kind` distintos (`hunter`, `ambusher`, `flanker`, `shy`) y `hunter` persigue a Pac-Man con Manhattan greedy.
@@ -30,10 +30,10 @@
 
 ```js
 const GHOST_STARTS = [
-  { x: 12, y: 14, kind: 'hunter' },
-  { x: 13, y: 14, kind: 'ambusher' },
-  { x: 14, y: 14, kind: 'flanker' },
-  { x: 15, y: 14, kind: 'shy' },
+  { x: 12, y: 14, kind: "hunter" },
+  { x: 13, y: 14, kind: "ambusher" },
+  { x: 14, y: 14, kind: "flanker" },
+  { x: 15, y: 14, kind: "shy" },
 ];
 ```
 
@@ -95,11 +95,11 @@ Celdas objetivo (solo para elegir dirección; no tienen que ser transitables):
 
 ## Risks
 
-| Risk | Mitigation |
-| --- | --- |
+| Risk                                                   | Mitigation                                                                  |
+| ------------------------------------------------------ | --------------------------------------------------------------------------- |
 | Cuatro fantasmas en la misma fila se bloquean al salir | Celdas distintas (x 12–15). La pen tiene hueco; `canMove` ya evita paredes. |
-| Objetivo de ambusher/flanker fuera del mapa o en muro | Solo sirve para comparar Manhattan; no se camina a esa celda. |
-| `shy` parece random casi siempre si el umbral es bajo | Umbral 8 en este laberinto 28×31; se nota el cambio de modo. |
+| Objetivo de ambusher/flanker fuera del mapa o en muro  | Solo sirve para comparar Manhattan; no se camina a esa celda.               |
+| `shy` parece random casi siempre si el umbral es bajo  | Umbral 8 en este laberinto 28×31; se nota el cambio de modo.                |
 
 ## What is **not** in this spec
 
