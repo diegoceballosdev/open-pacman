@@ -146,6 +146,10 @@ function decideGhost( game, g ) {
     const py = Math.round( p.y );
     const d = DIRS[ p.dir ];
     g.dir = greedyDir( g, choices, px + AMBUSHER_OFFSET * d.x, py + AMBUSHER_OFFSET * d.y );
+  } else if ( g.kind === 'flanker' ) {
+    const px = Math.round( p.x );
+    const py = Math.round( p.y );
+    g.dir = greedyDir( g, choices, grid[ 0 ].length - 1 - px, py );
   } else {
     g.dir = choices[ Math.floor( Math.random() * choices.length ) ];
   }
