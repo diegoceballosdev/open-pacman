@@ -1,6 +1,6 @@
 # SPEC 03 — Power pellets y modo frightened
 
-> **Estado:** Aprobado
+> **Estado:** implementado
 > **Depende de:** SPEC 02
 > **Fecha:** 2026-09-03
 > **Objetivo:** Hay 4 power pellets (tile 4) que activan 360 frames de frightened: Pac-Man come fantasmas (200 pts) y estos reaparecen en `GHOST_STARTS`.
