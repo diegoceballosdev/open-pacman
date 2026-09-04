@@ -15,6 +15,7 @@ const GHOST_SPEED = 0.1;    // 1/10 celda/frame
 const AMBUSHER_OFFSET = 4;
 const SHY_RANGE = 8;
 const PELLET_SCORE = 50;
+const FRIGHTENED_FRAMES = 360;
 
 // Crea una partida nueva. Copia MAZE (pristino) a game.grid para poder comer
 // dots sin destruir el original, y reiniciar.
@@ -31,6 +32,7 @@ function createGame() {
     score: 0,
     lives: 3,
     dotsRemaining: dots,
+    frightenedFrames: 0,
     grid,
     pacman: {
       x: PACMAN_START.x,
@@ -105,6 +107,10 @@ function movePacman( game ) {
       grid[ p.y ][ p.x ] = 0;
       game.score += PELLET_SCORE;
       game.dotsRemaining--;
+      game.frightenedFrames = FRIGHTENED_FRAMES;
+      game.ghosts.forEach( ( g ) => {
+        g.dir = OPPOSITE[ g.dir ];
+      } );
     }
     // Si no puede seguir, se detiene en la celda.
     if ( !canMove( grid, p.x, p.y, p.dir, 'pacman' ) ) return;
@@ -141,6 +147,11 @@ function decideGhost( game, g ) {
   );
   // Sin salida (callejon): permitir el giro de 180.
   const choices = options.length ? options : [ '' + OPPOSITE[ g.dir ] ];
+
+  if ( game.frightenedFrames > 0 ) {
+    g.dir = choices[ Math.floor( Math.random() * choices.length ) ];
+    return;
+  }
 
   if ( g.kind === 'hunter' ) {
     const px = Math.round( p.x );
@@ -204,6 +215,7 @@ function collides( a, b ) {
 }
 
 function update( game ) {
+  if ( game.frightenedFrames > 0 ) game.frightenedFrames--;
   movePacman( game );
   game.ghosts.forEach( ( g ) => moveGhost( game, g ) );
 
